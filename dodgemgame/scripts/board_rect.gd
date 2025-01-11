@@ -1,7 +1,7 @@
 extends ColorRect
 
-const WIDTH = 460
-const HEIGHT = 460
+const WIDTH = 460.0
+const HEIGHT = 460.0
 const N_CELLS = 3
 const CELL_WIDTH = WIDTH / (N_CELLS+1)
 #const PADDING = (WIDTH - CELL_WIDTH*(N_CELLS+2)) / 2
@@ -16,7 +16,22 @@ func xyToPos(x, y):
 	var px = X0 + (x+0.5) * CELL_WIDTH
 	var py = X0 + (N_CELLS-0.5-y) * CELL_WIDTH
 	return Vector2(px, py)
+# 目盛り値ラベル設置
+func add_axis_label(pos, txt):
+	var lbl = Label.new()
+	lbl.add_theme_color_override("font_color", Color.BLACK)
+	lbl.add_theme_font_size_override("font_size", 36)
+	lbl.text = txt
+	lbl.position = pos + Vector2(-CELL_WIDTH/10.0, 0)
+	add_child(lbl)
+	return lbl
 func _ready():
+	add_axis_label(xyToPos(0, -0.5), "a")
+	add_axis_label(xyToPos(1, -0.5), "b")
+	add_axis_label(xyToPos(2, -0.5), "c")
+	add_axis_label(xyToPos(-0.75, 0.25), "1")
+	add_axis_label(xyToPos(-0.75, 1.25), "2")
+	add_axis_label(xyToPos(-0.75, 2.25), "3")
 	$RedCar1.position = xyToPos(1, 0)
 	$RedCar2.position = xyToPos(2, 0)
 	$BlueCar1.position = xyToPos(0, 1)
