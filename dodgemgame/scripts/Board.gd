@@ -57,6 +57,17 @@ func gen_moves_red():
 			m_moves.push_back(Vector2(id, LEFT))
 		if pos.x < m_bd_size-1 && m_cells[pos.y][pos.x+1] == EMPTY:
 			m_moves.push_back(Vector2(id, RIGHT))
+func gen_moves_blue():
+	m_moves.clear()
+	var id = 0
+	for pos in m_blue_cars:
+		id -= 1
+		if pos.x + 1 == m_bd_size || m_cells[pos.y][pos.x+1] == EMPTY:
+			m_moves.push_back(Vector2(id, FORWARD))
+		if pos.y > 0 && m_cells[pos.y-1][pos.x] == EMPTY:
+			m_moves.push_back(Vector2(id, RIGHT))
+		if pos.y < m_bd_size-1 && m_cells[pos.y+1][pos.x] == EMPTY:
+			m_moves.push_back(Vector2(id, LEFT))
 func _ready():
 	pass # Replace with function body.
 func _process(delta):

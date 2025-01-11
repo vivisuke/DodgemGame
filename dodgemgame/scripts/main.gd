@@ -8,6 +8,8 @@ func _ready():
 	bd.print()
 	bd.gen_moves_red()
 	print("moves: ", bd.m_moves)
+	bd.gen_moves_blue()
+	print("moves: ", bd.m_moves)
 	pass # Replace with function body.
 
 
