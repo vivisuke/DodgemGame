@@ -9,6 +9,7 @@ func _ready():
 	#seed(0)
 	bd = Board.new(3)
 	bd.print()
+	$MessLabel.text = "青 の手番です。"
 	if false:
 		bd.gen_moves_red()
 		print("moves: ", bd.m_moves)
@@ -47,6 +48,15 @@ func _on_step_button_pressed():
 	$BoardRect.do_move(mv, goal)
 	if bd.m_n_red == 0 || bd.m_n_blue == 0:
 		is_game_over = true
-	is_blue_turn = !is_blue_turn
+		if bd.m_n_red == 0:
+			$MessLabel.text = "赤 の勝ちです。"
+		else:
+			$MessLabel.text = "青 の勝ちです。"
+	else:
+		is_blue_turn = !is_blue_turn
+		if is_blue_turn:
+			$MessLabel.text = "青 の手番です。"
+		else:
+			$MessLabel.text = "赤 の手番です。"
 
 	pass # Replace with function body.

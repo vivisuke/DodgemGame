@@ -76,7 +76,7 @@ func do_move(mv : Vector2, goal : bool):
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
 	#m_car.position = pos
-	tw.tween_property(m_car, "position", pos, 0.3)
+	tw.tween_property(m_car, "position", pos, 0.2)
 	tw.tween_callback(move_finished)
 
 func move_finished():
