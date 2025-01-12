@@ -2,10 +2,11 @@ extends Node2D
 
 var bd
 var is_blue_turn = true
+var is_game_over = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	seed(0)
+	#seed(0)
 	bd = Board.new(3)
 	bd.print()
 	if false:
@@ -31,6 +32,7 @@ func _process(delta):
 	pass
 
 func _on_step_button_pressed():
+	if is_game_over: return
 	var mv : Vector2
 	if is_blue_turn:
 		bd.gen_moves_blue()
@@ -43,6 +45,8 @@ func _on_step_button_pressed():
 	$BoardRect.do_move(mv)
 	bd.do_move(mv)
 	bd.print()
+	if bd.m_n_red == 0 || bd.m_n_blue == 0:
+		is_game_over = true
 	is_blue_turn = !is_blue_turn
 
 	pass # Replace with function body.

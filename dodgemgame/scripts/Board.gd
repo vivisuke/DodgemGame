@@ -13,7 +13,9 @@ enum {
 #var m_width
 #var m_height
 var m_bd_size				# 盤面縦・横セル数
-var m_n_cars = 2			# 片方の車数
+var m_n_cars = 2			# 片方の車数初期値
+var m_n_red = 2
+var m_n_blue = 2
 var m_cells = []			# ２次元配列、m_cells[y][x] で参照
 var m_red_cars = PackedVector2Array()		# 赤車位置 (x, y)
 var m_blue_cars = PackedVector2Array()
@@ -38,14 +40,16 @@ func init_board(bd_size):
 	m_red_cars.resize(2)
 	m_red_cars[0] = Vector2(1, 0)
 	m_red_cars[1] = Vector2(2, 0)
+	m_n_red = 2
 	m_blue_cars.resize(2)
 	m_blue_cars[0] = Vector2(0, 1)
 	m_blue_cars[1] = Vector2(0, 2)
+	m_n_blue = 2
 func print():
 	for v in range(m_bd_size-1, -1, -1):
 		print(m_cells[v])
-	print("red: ", m_red_cars)
-	print("blue: ", m_blue_cars)
+	print("red: ", m_red_cars, ", num = ", m_n_red)
+	print("blue: ", m_blue_cars, ", num = ", m_n_blue)
 func gen_moves_red():
 	m_moves.clear()
 	var id = 0
@@ -70,7 +74,7 @@ func gen_moves_blue():
 			m_moves.push_back(Vector2(id, RIGHT))
 		if pos.y < m_bd_size-1 && m_cells[pos.y+1][pos.x] == EMPTY:
 			m_moves.push_back(Vector2(id, LEFT))
-func do_move(mv : Vector2):
+func do_move(mv : Vector2) -> bool:		# return: ゴールした
 	var id = mv.x
 	if id > 0:	# 赤移動
 		var ix = id - 1
@@ -83,6 +87,10 @@ func do_move(mv : Vector2):
 			m_red_cars[ix].x += 1
 		if m_red_cars[ix].y < m_bd_size:
 			m_cells[m_red_cars[id-1].y][m_red_cars[id-1].x] = id
+			return false
+		else:
+			m_n_red -= 1
+			return true
 	else:		# 青移動
 		var ix = -id - 1
 		m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = EMPTY
@@ -94,6 +102,10 @@ func do_move(mv : Vector2):
 			m_blue_cars[ix].y -= 1
 		if m_blue_cars[ix].x < m_bd_size:
 			m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = id
+			return false;
+		else:
+			m_n_blue -= 1
+			return true
 func _ready():
 	pass # Replace with function body.
 func _process(delta):
