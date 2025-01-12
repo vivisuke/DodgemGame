@@ -53,3 +53,5 @@ offset_right = 482.0
 offset_bottom = 860.0
 texture_normal = ExtResource("6_yggd5")
 texture_pressed = ExtResource("7_d35ji")
+
+[connection signal="pressed" from="StepButton" to="." method="_on_step_button_pressed"]
