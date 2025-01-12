@@ -48,7 +48,8 @@ func _on_step_button_pressed():
 			is_game_over = true
 			$MessLabel.text = "赤 の勝ちです。"
 			return
-		mv = bd.m_moves[randi()%bd.m_moves.size()]
+		#mv = bd.m_moves[randi()%bd.m_moves.size()]
+		mv = bd.sel_move()
 	print("moves: ", bd.m_moves)
 	print("move: ", mv)
 	var goal = bd.do_move(mv)

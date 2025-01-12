@@ -74,6 +74,17 @@ func gen_moves_blue():
 			m_moves.push_back(Vector2(id, RIGHT))
 		if pos.y < m_bd_size-1 && m_cells[pos.y+1][pos.x] == EMPTY:
 			m_moves.push_back(Vector2(id, LEFT))
+func sel_move() -> Vector2:
+	var sum = 0
+	for mv in m_moves:
+		sum += 2 if mv.y == FORWARD else 1
+	if sum != 0:
+		var r = randi() % sum
+		for mv in m_moves:
+			var sz = 2 if mv.y == FORWARD else 1
+			if r < sz: return mv
+			r -= sz
+	return Vector2(0, 0)
 func do_move(mv : Vector2) -> bool:		# return: ゴールした
 	var id = mv.x
 	if id > 0:	# 赤移動
