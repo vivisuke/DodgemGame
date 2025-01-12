@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://rny153nfjt0m"]
+[gd_scene load_steps=10 format=3 uid="uid://rny153nfjt0m"]
 
 [ext_resource type="Script" path="res://scripts/title_bar.gd" id="1_bbicj"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_kk0or"]
 [ext_resource type="Script" path="res://scripts/board_rect.gd" id="2_0bpod"]
 [ext_resource type="Texture2D" uid="uid://dl8ima2w3iccb" path="res://images/right_blue.png" id="3_f032a"]
 [ext_resource type="Texture2D" uid="uid://bn2mnrdcvwknm" path="res://images/up_red.png" id="4_7e7ox"]
-[ext_resource type="Texture2D" uid="uid://cfqnwfnp13edx" path="res://images/navigate_next_black.png" id="6_yggd5"]
-[ext_resource type="Texture2D" uid="uid://nlgb2s14dyf0" path="res://images/navigate_next_white.png" id="7_d35ji"]
+[ext_resource type="Texture2D" uid="uid://n368dtjij1rl" path="res://images/replay_black.png" id="6_sq87c"]
+[ext_resource type="Texture2D" uid="uid://w7pggojvbb5f" path="res://images/replay_white.png" id="7_bk6fi"]
+[ext_resource type="Texture2D" uid="uid://c4sl22236ur8b" path="res://images/arrow_forward_black.png" id="8_indaq"]
+[ext_resource type="Texture2D" uid="uid://d3n7jd2snq213" path="res://images/arrow_forward_white.png" id="9_4ctl6"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_kk0or")
@@ -22,6 +24,16 @@ offset_right = 500.0
 offset_bottom = 50.0
 color = Color(0.180392, 0.309804, 0.309804, 1)
 script = ExtResource("1_bbicj")
+
+[node name="MessLabel" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 121.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "message"
+vertical_alignment = 1
 
 [node name="BoardRect" type="ColorRect" parent="."]
 offset_left = 20.0
@@ -46,22 +58,23 @@ texture = ExtResource("4_7e7ox")
 position = Vector2(355, 364)
 texture = ExtResource("4_7e7ox")
 
-[node name="StepButton" type="TextureButton" parent="."]
-offset_left = 442.0
-offset_top = 820.0
-offset_right = 482.0
-offset_bottom = 860.0
-texture_normal = ExtResource("6_yggd5")
-texture_pressed = ExtResource("7_d35ji")
-
-[node name="MessLabel" type="Label" parent="."]
+[node name="HBC" type="HBoxContainer" parent="."]
 offset_left = 20.0
-offset_top = 50.0
-offset_right = 60.0
-offset_bottom = 100.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 24
-text = "message"
-vertical_alignment = 1
+offset_top = 837.0
+offset_right = 480.0
+offset_bottom = 877.0
+theme_override_constants/separation = 8
+alignment = 2
 
-[connection signal="pressed" from="StepButton" to="." method="_on_step_button_pressed"]
+[node name="RestartButton" type="TextureButton" parent="HBC"]
+layout_mode = 2
+texture_normal = ExtResource("6_sq87c")
+texture_pressed = ExtResource("7_bk6fi")
+
+[node name="StepButton" type="TextureButton" parent="HBC"]
+layout_mode = 2
+texture_normal = ExtResource("8_indaq")
+texture_pressed = ExtResource("9_4ctl6")
+
+[connection signal="pressed" from="HBC/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="HBC/StepButton" to="." method="_on_step_button_pressed"]

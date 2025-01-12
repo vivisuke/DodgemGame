@@ -37,15 +37,17 @@ func _ready():
 	add_axis_label(xyToPos(-0.75, 0.25), "1")
 	add_axis_label(xyToPos(-0.75, 1.25), "2")
 	add_axis_label(xyToPos(-0.75, 2.25), "3")
-	$RedCar1.position = xyToPos(1, 0)
-	$RedCar2.position = xyToPos(2, 0)
-	$BlueCar1.position = xyToPos(0, 1)
-	$BlueCar2.position = xyToPos(0, 2)
 	red_cars.push_back($RedCar1)
 	red_cars.push_back($RedCar2)
 	blue_cars.push_back($BlueCar1)
 	blue_cars.push_back($BlueCar2)
+	init_cars_position()
 	pass
+func init_cars_position():
+	$RedCar1.position = xyToPos(1, 0)
+	$RedCar2.position = xyToPos(2, 0)
+	$BlueCar1.position = xyToPos(0, 1)
+	$BlueCar2.position = xyToPos(0, 2)
 func _draw():
 	draw_line(Vector2(X0, Y0), Vector2(X0+BD_WD, Y0), Color.BLACK, 2.0)
 	draw_line(Vector2(X0, Y0), Vector2(X0, Y0+BD_HT), Color.BLACK, 2.0)
@@ -76,7 +78,7 @@ func do_move(mv : Vector2, goal : bool):
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
 	#m_car.position = pos
-	tw.tween_property(m_car, "position", pos, 0.2)
+	tw.tween_property(m_car, "position", pos, 0.15)
 	tw.tween_callback(move_finished)
 
 func move_finished():

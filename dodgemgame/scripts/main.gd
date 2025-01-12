@@ -68,3 +68,12 @@ func _on_step_button_pressed():
 			$MessLabel.text = "赤 の手番です。"
 
 	pass # Replace with function body.
+
+
+func _on_restart_button_pressed():
+	is_game_over = false
+	is_blue_turn = true
+	$MessLabel.text = "青 の手番です。"
+	bd.init_board(3)
+	$BoardRect.init_cars_position()
+	pass # Replace with function body.
