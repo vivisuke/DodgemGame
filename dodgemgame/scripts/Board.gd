@@ -83,15 +83,15 @@ func do_move(mv : Vector2):
 			m_cells[m_red_cars[id-1].y][m_red_cars[id-1].x] = id
 	else:		# 青移動
 		var ix = -id - 1
-		m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = EMPTY
+		m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = EMPTY
 		if mv.y == FORWARD:
-			m_red_cars[ix].x += 1
+			m_blue_cars[ix].x += 1
 		elif mv.y == LEFT:
-			m_red_cars[ix].y += 1
+			m_blue_cars[ix].y += 1
 		else:
-			m_red_cars[ix].y -= 1
-		if m_red_cars[ix].x < m_bd_size:
-			m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = id
+			m_blue_cars[ix].y -= 1
+		if m_blue_cars[ix].x < m_bd_size:
+			m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = id
 func _ready():
 	pass # Replace with function body.
 func _process(delta):
