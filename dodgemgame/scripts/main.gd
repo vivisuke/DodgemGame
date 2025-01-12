@@ -37,9 +37,17 @@ func _on_step_button_pressed():
 	var mv : Vector2
 	if is_blue_turn:
 		bd.gen_moves_blue()
+		if bd.m_moves.is_empty():
+			is_game_over = true
+			$MessLabel.text = "青 の勝ちです。"
+			return
 		mv = bd.m_moves[randi()%bd.m_moves.size()]
 	else:
 		bd.gen_moves_red()
+		if bd.m_moves.is_empty():
+			is_game_over = true
+			$MessLabel.text = "赤 の勝ちです。"
+			return
 		mv = bd.m_moves[randi()%bd.m_moves.size()]
 	print("moves: ", bd.m_moves)
 	print("move: ", mv)
