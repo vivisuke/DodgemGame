@@ -12,6 +12,8 @@ const Y0 = CELL_WIDTH / 2
 const BD_WD = CELL_WIDTH * N_CELLS
 const BD_HT = CELL_WIDTH * N_CELLS
 
+var m_car
+var m_to_hide = false		# 移動後に車を非表示に
 var red_cars = []
 var blue_cars = []
 
@@ -55,26 +57,31 @@ func _draw():
 		draw_line(Vector2(X0, px), Vector2(X0+BD_WD, px), Color.BLACK, 1.0)
 		px += CELL_WIDTH
 	pass
-func do_move(mv : Vector2):
+func do_move(mv : Vector2, goal : bool):
+	m_to_hide = goal
 	var tw = create_tween()
 	var id = mv.x
+	var pos : Vector2
 	var dir = mv.y
 	if id > 0:		# 赤
-		var car = red_cars[id-1]
-		var pos : Vector2 = car.position
+		m_car = red_cars[id-1]
+		pos = m_car.position
 		if dir == Board.FORWARD: pos.y -= CELL_WIDTH
 		elif dir == Board.LEFT: pos.x -= CELL_WIDTH
 		else: pos.x += CELL_WIDTH
-		#car.position = pos
-		tw.tween_property(car, "position", pos, 0.3)
 	else:
-		var car = blue_cars[-id-1]
-		var pos : Vector2 = car.position
+		m_car = blue_cars[-id-1]
+		pos = m_car.position
 		if dir == Board.FORWARD: pos.x += CELL_WIDTH
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
-		#car.position = pos
-		tw.tween_property(car, "position", pos, 0.3)
+	#m_car.position = pos
+	tw.tween_property(m_car, "position", pos, 0.3)
+	tw.tween_callback(move_finished)
 
+func move_finished():
+	print("move_finished.")
+	if m_to_hide: m_car.hide()
+	pass
 func _process(delta):
 	pass

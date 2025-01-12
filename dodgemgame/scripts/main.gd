@@ -42,9 +42,9 @@ func _on_step_button_pressed():
 		mv = bd.m_moves[randi()%bd.m_moves.size()]
 	print("moves: ", bd.m_moves)
 	print("move: ", mv)
-	$BoardRect.do_move(mv)
-	bd.do_move(mv)
+	var goal = bd.do_move(mv)
 	bd.print()
+	$BoardRect.do_move(mv, goal)
 	if bd.m_n_red == 0 || bd.m_n_blue == 0:
 		is_game_over = true
 	is_blue_turn = !is_blue_turn
