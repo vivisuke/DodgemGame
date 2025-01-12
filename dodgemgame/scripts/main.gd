@@ -18,6 +18,8 @@ func _ready():
 	mv = bd.m_moves[randi()%bd.m_moves.size()]
 	print("move: ", mv)
 	$BoardRect.do_move(mv)
+	bd.do_move(mv)
+	bd.print()
 	pass # Replace with function body.
 
 

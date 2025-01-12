@@ -68,7 +68,7 @@ func do_move(mv : Vector2):
 	else:
 		var car = blue_cars[-id-1]
 		var pos : Vector2 = car.position
-		if dir == Board.FORWARD: pos.x -= CELL_WIDTH
+		if dir == Board.FORWARD: pos.x += CELL_WIDTH
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
 		car.position = pos
