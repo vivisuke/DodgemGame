@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://rny153nfjt0m"]
+[gd_scene load_steps=8 format=3 uid="uid://rny153nfjt0m"]
 
 [ext_resource type="Script" path="res://scripts/title_bar.gd" id="1_bbicj"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_kk0or"]
 [ext_resource type="Script" path="res://scripts/board_rect.gd" id="2_0bpod"]
 [ext_resource type="Texture2D" uid="uid://dl8ima2w3iccb" path="res://images/right_blue.png" id="3_f032a"]
 [ext_resource type="Texture2D" uid="uid://bn2mnrdcvwknm" path="res://images/up_red.png" id="4_7e7ox"]
+[ext_resource type="Texture2D" uid="uid://cfqnwfnp13edx" path="res://images/navigate_next_black.png" id="6_yggd5"]
+[ext_resource type="Texture2D" uid="uid://nlgb2s14dyf0" path="res://images/navigate_next_white.png" id="7_d35ji"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_kk0or")
@@ -29,13 +31,25 @@ offset_bottom = 560.0
 script = ExtResource("2_0bpod")
 
 [node name="BlueCar1" type="Sprite2D" parent="BoardRect"]
+position = Vector2(78, 112)
 texture = ExtResource("3_f032a")
 
 [node name="BlueCar2" type="Sprite2D" parent="BoardRect"]
+position = Vector2(82, 242)
 texture = ExtResource("3_f032a")
 
 [node name="RedCar1" type="Sprite2D" parent="BoardRect"]
+position = Vector2(216, 369)
 texture = ExtResource("4_7e7ox")
 
 [node name="RedCar2" type="Sprite2D" parent="BoardRect"]
+position = Vector2(355, 364)
 texture = ExtResource("4_7e7ox")
+
+[node name="StepButton" type="TextureButton" parent="."]
+offset_left = 442.0
+offset_top = 820.0
+offset_right = 482.0
+offset_bottom = 860.0
+texture_normal = ExtResource("6_yggd5")
+texture_pressed = ExtResource("7_d35ji")
