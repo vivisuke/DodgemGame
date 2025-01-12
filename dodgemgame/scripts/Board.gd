@@ -68,6 +68,30 @@ func gen_moves_blue():
 			m_moves.push_back(Vector2(id, RIGHT))
 		if pos.y < m_bd_size-1 && m_cells[pos.y+1][pos.x] == EMPTY:
 			m_moves.push_back(Vector2(id, LEFT))
+func do_move(mv : Vector2):
+	var id = mv.x
+	if id > 0:	# 赤移動
+		var ix = id - 1
+		m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = EMPTY
+		if mv.y == FORWARD:
+			m_red_cars[ix].y += 1
+		elif mv.y == LEFT:
+			m_red_cars[ix].x -= 1
+		else:
+			m_red_cars[ix].x += 1
+		if m_red_cars[ix].y < m_bd_size:
+			m_cells[m_red_cars[id-1].y][m_red_cars[id-1].x] = id
+	else:		# 青移動
+		var ix = -id - 1
+		m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = EMPTY
+		if mv.y == FORWARD:
+			m_red_cars[ix].x += 1
+		elif mv.y == LEFT:
+			m_red_cars[ix].y += 1
+		else:
+			m_red_cars[ix].y -= 1
+		if m_red_cars[ix].x < m_bd_size:
+			m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = id
 func _ready():
 	pass # Replace with function body.
 func _process(delta):

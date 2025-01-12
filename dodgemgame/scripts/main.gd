@@ -8,6 +8,10 @@ func _ready():
 	bd.print()
 	bd.gen_moves_red()
 	print("moves: ", bd.m_moves)
+	var mv = bd.m_moves[randi()%bd.m_moves.size()]
+	print("move: ", mv)
+	bd.do_move(mv)
+	bd.print()
 	bd.gen_moves_blue()
 	print("moves: ", bd.m_moves)
 	pass # Replace with function body.
