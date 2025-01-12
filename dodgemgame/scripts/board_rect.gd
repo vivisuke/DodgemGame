@@ -56,6 +56,7 @@ func _draw():
 		px += CELL_WIDTH
 	pass
 func do_move(mv : Vector2):
+	var tw = create_tween()
 	var id = mv.x
 	var dir = mv.y
 	if id > 0:		# 赤
@@ -64,14 +65,16 @@ func do_move(mv : Vector2):
 		if dir == Board.FORWARD: pos.y -= CELL_WIDTH
 		elif dir == Board.LEFT: pos.x -= CELL_WIDTH
 		else: pos.x += CELL_WIDTH
-		car.position = pos
+		#car.position = pos
+		tw.tween_property(car, "position", pos, 0.3)
 	else:
 		var car = blue_cars[-id-1]
 		var pos : Vector2 = car.position
 		if dir == Board.FORWARD: pos.x += CELL_WIDTH
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
-		car.position = pos
+		#car.position = pos
+		tw.tween_property(car, "position", pos, 0.3)
 
 func _process(delta):
 	pass
