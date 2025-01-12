@@ -10,10 +10,14 @@ func _ready():
 	print("moves: ", bd.m_moves)
 	var mv = bd.m_moves[randi()%bd.m_moves.size()]
 	print("move: ", mv)
+	$BoardRect.do_move(mv)
 	bd.do_move(mv)
 	bd.print()
 	bd.gen_moves_blue()
 	print("moves: ", bd.m_moves)
+	mv = bd.m_moves[randi()%bd.m_moves.size()]
+	print("move: ", mv)
+	$BoardRect.do_move(mv)
 	pass # Replace with function body.
 
 

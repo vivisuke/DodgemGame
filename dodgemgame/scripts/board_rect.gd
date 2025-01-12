@@ -12,6 +12,9 @@ const Y0 = CELL_WIDTH / 2
 const BD_WD = CELL_WIDTH * N_CELLS
 const BD_HT = CELL_WIDTH * N_CELLS
 
+var red_cars = []
+var blue_cars = []
+
 func xyToPos(x, y):
 	var px = X0 + (x+0.5) * CELL_WIDTH
 	var py = X0 + (N_CELLS-0.5-y) * CELL_WIDTH
@@ -36,6 +39,10 @@ func _ready():
 	$RedCar2.position = xyToPos(2, 0)
 	$BlueCar1.position = xyToPos(0, 1)
 	$BlueCar2.position = xyToPos(0, 2)
+	red_cars.push_back($RedCar1)
+	red_cars.push_back($RedCar2)
+	blue_cars.push_back($BlueCar1)
+	blue_cars.push_back($BlueCar2)
 	pass
 func _draw():
 	draw_line(Vector2(X0, Y0), Vector2(X0+BD_WD, Y0), Color.BLACK, 2.0)
@@ -48,5 +55,23 @@ func _draw():
 		draw_line(Vector2(X0, px), Vector2(X0+BD_WD, px), Color.BLACK, 1.0)
 		px += CELL_WIDTH
 	pass
+func do_move(mv : Vector2):
+	var id = mv.x
+	var dir = mv.y
+	if id > 0:		# 赤
+		var car = red_cars[id-1]
+		var pos : Vector2 = car.position
+		if dir == Board.FORWARD: pos.y -= CELL_WIDTH
+		elif dir == Board.LEFT: pos.x -= CELL_WIDTH
+		else: pos.x += CELL_WIDTH
+		car.position = pos
+	else:
+		var car = blue_cars[-id-1]
+		var pos : Vector2 = car.position
+		if dir == Board.FORWARD: pos.x -= CELL_WIDTH
+		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
+		else: pos.y += CELL_WIDTH
+		car.position = pos
+
 func _process(delta):
 	pass
