@@ -51,6 +51,7 @@ func gen_moves_red():
 	var id = 0
 	for pos in m_red_cars:
 		id += 1
+		if pos.y == m_bd_size: continue
 		if pos.y + 1 == m_bd_size || m_cells[pos.y+1][pos.x] == EMPTY:
 			m_moves.push_back(Vector2(id, FORWARD))
 		if pos.x > 0 && m_cells[pos.y][pos.x-1] == EMPTY:
@@ -62,6 +63,7 @@ func gen_moves_blue():
 	var id = 0
 	for pos in m_blue_cars:
 		id -= 1
+		if pos.x == m_bd_size: continue
 		if pos.x + 1 == m_bd_size || m_cells[pos.y][pos.x+1] == EMPTY:
 			m_moves.push_back(Vector2(id, FORWARD))
 		if pos.y > 0 && m_cells[pos.y-1][pos.x] == EMPTY:
