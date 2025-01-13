@@ -10,8 +10,6 @@ enum {
 	FORWARD = 1, LEFT, RIGHT,
 }
 
-#var m_width
-#var m_height
 var m_bd_size				# 盤面縦・横セル数
 var m_n_cars = 2			# 片方の車数初期値
 var m_n_red = 2
@@ -25,8 +23,6 @@ func _init(bd_size = 3):		# 横・縦サイズ
 	init_board(bd_size)
 	pass
 func init_board(bd_size):
-	#m_width = wd
-	#m_height = ht
 	m_bd_size = bd_size
 	m_n_cars = m_bd_size - 1
 	m_cells.resize(m_bd_size)
@@ -42,12 +38,17 @@ func init_board(bd_size):
 	for i in range(m_bd_size-1):
 		m_red_cars[i] = Vector2(i+1, 0)
 		m_blue_cars[i] = Vector2(0, i+1)
-	#m_red_cars[0] = Vector2(1, 0)
-	#m_red_cars[1] = Vector2(2, 0)
 	m_n_red = m_bd_size - 1
-	#m_blue_cars[0] = Vector2(0, 1)
-	#m_blue_cars[1] = Vector2(0, 2)
 	m_n_blue = m_bd_size - 1
+func copy(src: Board):
+	m_bd_size = src.m_bd_size
+	m_n_red = src.m_n_red
+	m_n_blue = src.m_n_blue
+	m_cells = src.m_cells.duplicate()
+	m_red_cars = src.m_red_cars.duplicate()
+	m_blue_cars = src.m_blue_cars.duplicate()
+	m_moves = src.m_moves.duplicate()
+	pass
 func print():
 	for v in range(m_bd_size-1, -1, -1):
 		print(m_cells[v])
