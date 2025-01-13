@@ -43,6 +43,7 @@ func _on_step_button_pressed():
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
 	else:
+		var r = bd.play_out(true)
 		bd.gen_moves_red()
 		if bd.m_moves.is_empty():
 			is_game_over = true

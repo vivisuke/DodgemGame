@@ -34,19 +34,9 @@ func _ready():
 	for i in range(N_CELLS):
 		add_axis_label(xyToPos(i, -0.5), "%c"%(0x61+i))
 		add_axis_label(xyToPos(-0.75, 0.25+i), "%d"%(i+1))
-	#add_axis_label(xyToPos(0, -0.5), "a")
-	#add_axis_label(xyToPos(1, -0.5), "b")
-	#add_axis_label(xyToPos(2, -0.5), "c")
-	#add_axis_label(xyToPos(-0.75, 0.25), "1")
-	#add_axis_label(xyToPos(-0.75, 1.25), "2")
-	#add_axis_label(xyToPos(-0.75, 2.25), "3")
 	for i in range(1, N_CELLS):
 		red_cars.push_back(get_node("RedCar%d"%i))
 		blue_cars.push_back(get_node("BlueCar%d"%i))
-	#red_cars.push_back($RedCar1)
-	#red_cars.push_back($RedCar2)
-	#blue_cars.push_back($BlueCar1)
-	#blue_cars.push_back($BlueCar2)
 	init_cars()
 	pass
 func init_cars():
@@ -55,6 +45,8 @@ func init_cars():
 		blue_cars[i].show()
 		red_cars[i].position = xyToPos(i+1, 0)
 		blue_cars[i].position = xyToPos(0, i+1)
+		red_cars[i].scale = Vector2(3.0/N_CELLS, 3.0/N_CELLS)
+		blue_cars[i].scale = Vector2(3.0/N_CELLS, 3.0/N_CELLS)
 	#$RedCar1.show()
 	#$RedCar2.show()
 	#$BlueCar1.show()

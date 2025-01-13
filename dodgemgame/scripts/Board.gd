@@ -40,7 +40,7 @@ func init_board(bd_size):
 		m_blue_cars[i] = Vector2(0, i+1)
 	m_n_red = m_bd_size - 1
 	m_n_blue = m_bd_size - 1
-func copy(src: Board):
+func copy_from(src: Board):
 	m_bd_size = src.m_bd_size
 	m_n_red = src.m_n_red
 	m_n_blue = src.m_n_blue
@@ -121,6 +121,20 @@ func do_move(mv : Vector2) -> bool:		# return: ゴールした
 		else:
 			m_n_blue -= 1
 			return true
+func play_out(red_turn : bool = true) -> int:		# 1 for 赤勝ち, -1 for 青勝ち, 0 for 引き分け
+	var bd : Board = Board.new(m_bd_size)
+	bd.copy_from(self)
+	while true:
+		if red_turn:
+			bd.gen_moves_red()
+		else:
+			bd.gen_moves_blue()
+		var mv = bd.sel_move()
+		if bd.do_move(mv):
+			if bd.m_n_red == 0: return 1
+			if bd.m_n_blue == 0: return -1
+		red_turn = !red_turn
+	return 0
 func _ready():
 	pass # Replace with function body.
 func _process(delta):
