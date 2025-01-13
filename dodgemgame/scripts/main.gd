@@ -7,7 +7,7 @@ var is_game_over = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#seed(0)
-	bd = Board.new(3)
+	bd = Board.new(4)
 	bd.print()
 	$MessLabel.text = "青 の手番です。"
 	if false:
@@ -41,7 +41,7 @@ func _on_step_button_pressed():
 			is_game_over = true
 			$MessLabel.text = "青 の勝ちです。"
 			return
-		mv = bd.m_moves[randi()%bd.m_moves.size()]
+		#mv = bd.m_moves[randi()%bd.m_moves.size()]
 	else:
 		bd.gen_moves_red()
 		if bd.m_moves.is_empty():
@@ -49,7 +49,7 @@ func _on_step_button_pressed():
 			$MessLabel.text = "赤 の勝ちです。"
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
-		mv = bd.sel_move()
+	mv = bd.sel_move()
 	print("moves: ", bd.m_moves)
 	print("move: ", mv)
 	var goal = bd.do_move(mv)
@@ -75,6 +75,6 @@ func _on_restart_button_pressed():
 	is_game_over = false
 	is_blue_turn = true
 	$MessLabel.text = "青 の手番です。"
-	bd.init_board(3)
-	$BoardRect.init_cars_position()
+	bd.init_board(4)
+	$BoardRect.init_cars()
 	pass # Replace with function body.

@@ -2,7 +2,7 @@ extends ColorRect
 
 const WIDTH = 460.0
 const HEIGHT = 460.0
-const N_CELLS = 3
+const N_CELLS = 4
 const CELL_WIDTH = WIDTH / (N_CELLS+1)
 #const PADDING = (WIDTH - CELL_WIDTH*(N_CELLS+2)) / 2
 #const X0 = PADDING + CELL_WIDTH
@@ -31,19 +31,26 @@ func add_axis_label(pos, txt):
 	add_child(lbl)
 	return lbl
 func _ready():
-	add_axis_label(xyToPos(0, -0.5), "a")
-	add_axis_label(xyToPos(1, -0.5), "b")
-	add_axis_label(xyToPos(2, -0.5), "c")
-	add_axis_label(xyToPos(-0.75, 0.25), "1")
-	add_axis_label(xyToPos(-0.75, 1.25), "2")
-	add_axis_label(xyToPos(-0.75, 2.25), "3")
+	for i in range(N_CELLS):
+		add_axis_label(xyToPos(i, -0.5), "%c"%(0x61+i))
+		add_axis_label(xyToPos(-0.75, 0.25+i), "%d"%(i+1))
+	#add_axis_label(xyToPos(0, -0.5), "a")
+	#add_axis_label(xyToPos(1, -0.5), "b")
+	#add_axis_label(xyToPos(2, -0.5), "c")
+	#add_axis_label(xyToPos(-0.75, 0.25), "1")
+	#add_axis_label(xyToPos(-0.75, 1.25), "2")
+	#add_axis_label(xyToPos(-0.75, 2.25), "3")
 	red_cars.push_back($RedCar1)
 	red_cars.push_back($RedCar2)
 	blue_cars.push_back($BlueCar1)
 	blue_cars.push_back($BlueCar2)
-	init_cars_position()
+	init_cars()
 	pass
-func init_cars_position():
+func init_cars():
+	$RedCar1.show()
+	$RedCar2.show()
+	$BlueCar1.show()
+	$BlueCar2.show()
 	$RedCar1.position = xyToPos(1, 0)
 	$RedCar2.position = xyToPos(2, 0)
 	$BlueCar1.position = xyToPos(0, 1)
