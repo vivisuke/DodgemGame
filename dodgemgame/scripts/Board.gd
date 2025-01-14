@@ -54,17 +54,22 @@ func print():
 		print(m_cells[v])
 	print("red: ", m_red_cars, ", num = ", m_n_red)
 	print("blue: ", m_blue_cars, ", num = ", m_n_blue)
+func move_to_str(mv):
+	var txt : String
+	var id = mv.x
+	if id > 0:
+		txt = "%c%d "%[m_red_cars[id-1].x+0x61, m_red_cars[id-1].y+1]
+	else:
+		txt = "%c%d "%[m_blue_cars[-id-1].x+0x61, m_blue_cars[-id-1].y+1]
+	if mv.y == FORWARD: txt += "FD"
+	elif mv.y == LEFT: txt += "LEFT"
+	else: txt += "RIGHT"
+	return txt
 func print_moves():
 	var txt = ""
 	for mv in m_moves:
-		var id = mv.x
-		if id > 0:
-			txt += "%c%d "%[m_red_cars[id-1].x+0x61, m_red_cars[id-1].y+1]
-		else:
-			txt += "%c%d "%[m_blue_cars[-id-1].x+0x61, m_blue_cars[-id-1].y+1]
-		if mv.y == FORWARD: txt += "FD, "
-		elif mv.y == LEFT: txt += "LEFT, "
-		else: txt += "RIGHT, "
+		txt += move_to_str(mv)
+		txt += ", "
 	print(txt)
 func gen_moves_red():
 	m_moves.clear()
@@ -153,6 +158,21 @@ func estimate_win_rate(itr : int, red_turn : bool = true) -> float:		# [-1.0, +1
 	for i in range(itr):
 		sum += play_out(red_turn)
 	return sum / itr
+func sel_move_mc(red_turn : bool) -> Vector2:		# 純粋モンテカルロ法により着手を選ぶ
+	var best = Vector2(0, 0)
+	if red_turn:
+		var mxr = -2.0
+		for mv in m_moves:
+			var bd = Board.new()
+			bd.copy_from(self)
+			if bd.do_move(mv) && bd.m_n_red == 0:
+				return mv		# すべてゴールした場合
+			var r = estimate_win_rate(100, false)
+			print(move_to_str(mv), ": ", r)
+			if r > mxr:
+				mxr = r
+				best = mv
+	return best
 func _ready():
 	pass # Replace with function body.
 func _process(delta):

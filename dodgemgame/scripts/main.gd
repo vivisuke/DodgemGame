@@ -44,17 +44,19 @@ func _on_step_button_pressed():		# １手進める
 			$MessLabel.text = "青 の勝ちです。"
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
+		mv = bd.sel_move()
 	else:
 		#var r = bd.play_out(true)
-		var r = bd.estimate_win_rate(100, true)
-		print("win rate = ", r)
+		#var r = bd.estimate_win_rate(100, true)
+		#print("win rate = ", r)
 		bd.gen_moves_red()
 		if bd.m_moves.is_empty():
 			is_game_over = true
 			$MessLabel.text = "赤 の勝ちです。"
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
-	mv = bd.sel_move()
+		mv = bd.sel_move_mc(true)
+	#mv = bd.sel_move()
 	bd.print_moves()
 	#print("moves: ", bd.m_moves)
 	print("move: ", mv)
