@@ -136,19 +136,23 @@ func do_move(mv : Vector2) -> bool:		# return: ゴールした
 func play_out(red_turn : bool = true) -> int:		# 1 for 赤勝ち, -1 for 青勝ち, 0 for 引き分け
 	var bd : Board = Board.new(m_bd_size)
 	bd.copy_from(self)
-	while true:
+	#while true:
+	for i in range(100):
 		if red_turn:
 			bd.gen_moves_red()
 		else:
 			bd.gen_moves_blue()
 		var mv = bd.sel_move()
-		if bd.do_move(mv):
+		if mv.x == 0 || bd.do_move(mv):
 			if bd.m_n_red == 0: return 1
 			if bd.m_n_blue == 0: return -1
 		red_turn = !red_turn
 	return 0
-func estimate_win_rate(itr, red_turn : bool = true) -> float:
-	return 0.0
+func estimate_win_rate(itr : int, red_turn : bool = true) -> float:		# [-1.0, +1.0] の値を返す、+1 for 赤勝ち
+	var sum = 0.0
+	for i in range(itr):
+		sum += play_out(red_turn)
+	return sum / itr
 func _ready():
 	pass # Replace with function body.
 func _process(delta):
