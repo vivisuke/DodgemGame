@@ -1,7 +1,7 @@
 class_name Board
 extends Node
 
-
+const BD_SIZE = 3
 const EMPTY = 0
 const RED_CAR  =  1
 const BLUE_CAR = -1
@@ -11,15 +11,15 @@ enum {
 }
 
 var m_bd_size				# 盤面縦・横セル数
-var m_n_cars = 2			# 片方の車数初期値
-var m_n_red = 2
-var m_n_blue = 2
+var m_n_cars = 0			# 片方の車数初期値
+var m_n_red = 0
+var m_n_blue = 0
 var m_cells = []			# ２次元配列、m_cells[y][x] で参照
 var m_red_cars = PackedVector2Array()		# 赤車位置 (x, y)
 var m_blue_cars = PackedVector2Array()
 var m_moves = PackedVector2Array()			# (車ID, 移動方向)、※ ID は 1 org for RED, -1, -2, ... for BLUE
 
-func _init(bd_size = 3):		# 横・縦サイズ
+func _init(bd_size = BD_SIZE):		# 横・縦サイズ
 	init_board(bd_size)
 	pass
 func init_board(bd_size):
@@ -44,7 +44,7 @@ func copy_from(src: Board):
 	m_bd_size = src.m_bd_size
 	m_n_red = src.m_n_red
 	m_n_blue = src.m_n_blue
-	m_cells = src.m_cells.duplicate()
+	m_cells = src.m_cells.duplicate(true)
 	m_red_cars = src.m_red_cars.duplicate()
 	m_blue_cars = src.m_blue_cars.duplicate()
 	m_moves = src.m_moves.duplicate()
@@ -54,6 +54,18 @@ func print():
 		print(m_cells[v])
 	print("red: ", m_red_cars, ", num = ", m_n_red)
 	print("blue: ", m_blue_cars, ", num = ", m_n_blue)
+func print_moves():
+	var txt = ""
+	for mv in m_moves:
+		var id = mv.x
+		if id > 0:
+			txt += "%c%d "%[m_red_cars[id-1].x+0x61, m_red_cars[id-1].y+1]
+		else:
+			txt += "%c%d "%[m_blue_cars[-id-1].x+0x61, m_blue_cars[-id-1].y+1]
+		if mv.y == FORWARD: txt += "FD, "
+		elif mv.y == LEFT: txt += "LEFT, "
+		else: txt += "RIGHT, "
+	print(txt)
 func gen_moves_red():
 	m_moves.clear()
 	var id = 0
@@ -135,6 +147,8 @@ func play_out(red_turn : bool = true) -> int:		# 1 for 赤勝ち, -1 for 青勝�
 			if bd.m_n_blue == 0: return -1
 		red_turn = !red_turn
 	return 0
+func estimate_win_rate(itr, red_turn : bool = true) -> float:
+	return 0.0
 func _ready():
 	pass # Replace with function body.
 func _process(delta):

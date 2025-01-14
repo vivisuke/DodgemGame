@@ -1,13 +1,15 @@
 extends Node2D
 
+#const BD_WIDTH = 3
+
 var bd
 var is_blue_turn = true
 var is_game_over = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#seed(0)
-	bd = Board.new(4)
+	seed(0)
+	bd = Board.new()
 	bd.print()
 	$MessLabel.text = "青 の手番です。"
 	if false:
@@ -32,7 +34,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func _on_step_button_pressed():
+func _on_step_button_pressed():		# １手進める
 	if is_game_over: return
 	var mv : Vector2
 	if is_blue_turn:
@@ -51,7 +53,8 @@ func _on_step_button_pressed():
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
 	mv = bd.sel_move()
-	print("moves: ", bd.m_moves)
+	bd.print_moves()
+	#print("moves: ", bd.m_moves)
 	print("move: ", mv)
 	var goal = bd.do_move(mv)
 	bd.print()

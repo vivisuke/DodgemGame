@@ -2,7 +2,7 @@ extends ColorRect
 
 const WIDTH = 460.0
 const HEIGHT = 460.0
-const N_CELLS = 4
+const N_CELLS = Board.BD_SIZE
 const CELL_WIDTH = WIDTH / (N_CELLS+1)
 #const PADDING = (WIDTH - CELL_WIDTH*(N_CELLS+2)) / 2
 #const X0 = PADDING + CELL_WIDTH
@@ -45,8 +45,8 @@ func init_cars():
 		blue_cars[i].show()
 		red_cars[i].position = xyToPos(i+1, 0)
 		blue_cars[i].position = xyToPos(0, i+1)
-		red_cars[i].scale = Vector2(3.0/N_CELLS, 3.0/N_CELLS)
-		blue_cars[i].scale = Vector2(3.0/N_CELLS, 3.0/N_CELLS)
+		red_cars[i].scale = Vector2(3.5/N_CELLS, 3.5/N_CELLS)
+		blue_cars[i].scale = Vector2(3.5/N_CELLS, 3.5/N_CELLS)
 	#$RedCar1.show()
 	#$RedCar2.show()
 	#$BlueCar1.show()
