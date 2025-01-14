@@ -40,6 +40,23 @@ func init_board(bd_size):
 		m_blue_cars[i] = Vector2(0, i+1)
 	m_n_red = m_bd_size - 1
 	m_n_blue = m_bd_size - 1
+func set_cars(red_cars, blue_cars):
+	for i in range(m_cells.size()):
+		m_cells[i].fill(EMPTY)
+	#m_red_cars.clear()
+	#m_blue_cars.clear()
+	m_red_cars = red_cars.duplicate()
+	m_blue_cars = blue_cars.duplicate()
+	m_n_red = red_cars.size()
+	m_n_blue = blue_cars.size()
+	var id = 0
+	for pos in m_red_cars:
+		id += 1
+		m_cells[pos.y][pos.x] = id
+	id = 0
+	for pos in m_blue_cars:
+		id -= 1
+		m_cells[pos.y][pos.x] = id
 func copy_from(src: Board):
 	m_bd_size = src.m_bd_size
 	m_n_red = src.m_n_red
