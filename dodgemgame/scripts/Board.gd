@@ -97,7 +97,7 @@ func gen_moves_red():
 	var id = 0
 	for pos in m_red_cars:
 		id += 1
-		if pos.y == m_bd_size: continue
+		if pos.y == m_bd_size || pos.y < 0: continue
 		if pos.y + 1 == m_bd_size || m_cells[pos.y+1][pos.x] == EMPTY:
 			m_moves.push_back(Vector2(id, FORWARD))
 		if pos.x > 0 && m_cells[pos.y][pos.x-1] == EMPTY:
@@ -109,7 +109,7 @@ func gen_moves_blue():
 	var id = 0
 	for pos in m_blue_cars:
 		id -= 1
-		if pos.x == m_bd_size: continue
+		if pos.x == m_bd_size || pos.x < 0: continue
 		if pos.x + 1 == m_bd_size || m_cells[pos.y][pos.x+1] == EMPTY:
 			m_moves.push_back(Vector2(id, FORWARD))
 		if pos.y > 0 && m_cells[pos.y-1][pos.x] == EMPTY:
@@ -188,7 +188,7 @@ func sel_move_mc(red_turn : bool) -> Vector2:		# 純粋モンテカルロ法に�
 			bd.copy_from(self)
 			if bd.do_move(mv) && bd.m_n_red == 0:
 				return mv		# すべてゴールした場合
-			var r = estimate_win_rate(100, false)
+			var r = bd.estimate_win_rate(100, false)
 			print(move_to_str(mv), ": ", r)
 			if r > mxr:
 				mxr = r

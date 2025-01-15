@@ -14,9 +14,13 @@ func _ready():
 		bd.set_cars([Vector2(2, 0)], [Vector2(0, 2)])
 		bd.print()
 	bd = Board.new()
-	bd.set_cars([Vector2(2, 1)], [Vector2(1, 2)])
-	bd.print()
-	$BoardRect.set_cars(bd)
+	if false:
+		bd.set_cars([Vector2(2, 1)], [Vector2(1, 2)])
+		bd.print()
+		$BoardRect.set_cars(bd)
+		bd.gen_moves_red()
+		bd.print_moves()
+		bd.sel_move_mc(true)
 	$MessLabel.text = "青 の手番です。"
 	if false:
 		bd.gen_moves_red()
