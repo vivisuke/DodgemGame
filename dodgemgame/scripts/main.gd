@@ -8,7 +8,7 @@ var is_game_over = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	seed(0)
+	#seed(0)
 	if false:
 		var bd = Board.new()
 		bd.set_cars([Vector2(2, 0)], [Vector2(0, 2)])

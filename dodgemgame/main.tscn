@@ -57,6 +57,11 @@ visible = false
 position = Vector2(82, 242)
 texture = ExtResource("3_f032a")
 
+[node name="BlueCar4" type="Sprite2D" parent="BoardRect"]
+visible = false
+position = Vector2(82, 242)
+texture = ExtResource("3_f032a")
+
 [node name="RedCar1" type="Sprite2D" parent="BoardRect"]
 visible = false
 position = Vector2(216, 369)
@@ -68,6 +73,11 @@ position = Vector2(355, 364)
 texture = ExtResource("4_7e7ox")
 
 [node name="RedCar3" type="Sprite2D" parent="BoardRect"]
+visible = false
+position = Vector2(355, 364)
+texture = ExtResource("4_7e7ox")
+
+[node name="RedCar4" type="Sprite2D" parent="BoardRect"]
 visible = false
 position = Vector2(355, 364)
 texture = ExtResource("4_7e7ox")

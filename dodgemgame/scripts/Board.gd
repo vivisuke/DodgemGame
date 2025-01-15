@@ -1,7 +1,7 @@
 class_name Board
 extends Node
 
-const BD_SIZE = 3
+const BD_SIZE = 5
 const EMPTY = 0
 const RED_CAR  =  1
 const BLUE_CAR = -1
@@ -119,11 +119,11 @@ func gen_moves_blue():
 func sel_move() -> Vector2:
 	var sum = 0
 	for mv in m_moves:
-		sum += 2 if mv.y == FORWARD else 1
+		sum += 4 if mv.y == FORWARD else 1
 	if sum != 0:
 		var r = randi() % sum
 		for mv in m_moves:
-			var sz = 2 if mv.y == FORWARD else 1
+			var sz = 4 if mv.y == FORWARD else 1
 			if r < sz: return mv
 			r -= sz
 	return Vector2(0, 0)
