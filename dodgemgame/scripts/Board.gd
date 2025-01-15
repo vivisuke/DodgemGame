@@ -1,7 +1,7 @@
 class_name Board
 extends Node
 
-const BD_SIZE = 5
+const BD_SIZE = 3
 const EMPTY = 0
 const RED_CAR  =  1
 const BLUE_CAR = -1

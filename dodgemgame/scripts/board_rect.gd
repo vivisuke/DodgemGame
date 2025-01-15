@@ -34,8 +34,8 @@ func add_axis_label(pos, txt):
 	return lbl
 func _ready():
 	for i in range(N_CELLS):
-		add_axis_label(xyToPos(i, -0.5), "%c"%(0x61+i))
-		add_axis_label(xyToPos(-0.75, 0.25+i), "%d"%(i+1))
+		add_axis_label(xyToPos(i, -0.45), "%c"%(0x61+i))
+		add_axis_label(xyToPos(-0.80, 0.25+i), "%d"%(i+1))
 	red_cars.clear()
 	blue_cars.clear()
 	for i in range(1, N_CELLS):
