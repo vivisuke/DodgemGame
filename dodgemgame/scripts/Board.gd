@@ -57,6 +57,10 @@ func set_cars(red_cars, blue_cars):
 	for pos in m_blue_cars:
 		id -= 1
 		m_cells[pos.y][pos.x] = id
+	while m_red_cars.size() < m_bd_size - 1:
+		m_red_cars.push_back(Vector2(-1, -1))		# -1 for ゴール済み
+	while m_blue_cars.size() < m_bd_size - 1:
+		m_blue_cars.push_back(Vector2(-1, -1))
 func copy_from(src: Board):
 	m_bd_size = src.m_bd_size
 	m_n_red = src.m_n_red

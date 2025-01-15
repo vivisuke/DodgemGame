@@ -9,12 +9,14 @@ var is_game_over = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	seed(0)
-	if true:
+	if false:
 		var bd = Board.new()
 		bd.set_cars([Vector2(2, 0)], [Vector2(0, 2)])
 		bd.print()
 	bd = Board.new()
+	bd.set_cars([Vector2(2, 1)], [Vector2(1, 2)])
 	bd.print()
+	$BoardRect.set_cars(bd)
 	$MessLabel.text = "青 の手番です。"
 	if false:
 		bd.gen_moves_red()

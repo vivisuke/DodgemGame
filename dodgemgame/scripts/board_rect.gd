@@ -21,6 +21,8 @@ func xyToPos(x, y):
 	var px = X0 + (x+0.5) * CELL_WIDTH
 	var py = X0 + (N_CELLS-0.5-y) * CELL_WIDTH
 	return Vector2(px, py)
+func vec2ToPos(vec2):
+	return xyToPos(vec2.x, vec2.y)
 # 目盛り値ラベル設置
 func add_axis_label(pos, txt):
 	var lbl = Label.new()
@@ -57,6 +59,20 @@ func init_cars():
 	#$RedCar2.position = xyToPos(2, 0)
 	#$BlueCar1.position = xyToPos(0, 1)
 	#$BlueCar2.position = xyToPos(0, 2)
+func set_cars(bd: Board):
+	#red_cars.resize(bd.m_red_cars.size())
+	# 前提条件：盤面サイズは同一
+	for i in range(bd.m_red_cars.size()):
+		if bd.m_red_cars[i].x >= 0:
+			red_cars[i].position = vec2ToPos(bd.m_red_cars[i])
+		else:
+			red_cars[i].hide()
+	for i in range(bd.m_blue_cars.size()):
+		if bd.m_blue_cars[i].x >= 0:
+			blue_cars[i].position = vec2ToPos(bd.m_blue_cars[i])
+		else:
+			blue_cars[i].hide()
+	pass
 func _draw():
 	draw_line(Vector2(X0, Y0), Vector2(X0+BD_WD, Y0), Color.BLACK, 2.0)
 	draw_line(Vector2(X0, Y0), Vector2(X0, Y0+BD_HT), Color.BLACK, 2.0)
