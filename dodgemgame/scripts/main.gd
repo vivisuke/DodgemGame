@@ -93,6 +93,7 @@ func _on_restart_button_pressed():
 	is_game_over = false
 	is_blue_turn = true
 	$MessLabel.text = "青 の手番です。"
-	bd.init_board(4)
+	bd.init_board(Board.BD_SIZE)
+	bd.print()
 	$BoardRect.init_cars()
 	pass # Replace with function body.

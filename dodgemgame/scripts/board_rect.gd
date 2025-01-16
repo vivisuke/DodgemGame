@@ -16,6 +16,8 @@ var m_car
 var m_to_hide = false		# 移動後に車を非表示に
 var red_cars = []
 var blue_cars = []
+var src_pos = Vector2(-1, -1)	# 移動元位置
+var dst_pos = Vector2(-1, -1)	# 移動先位置
 
 func xyToPos(x, y):
 	var px = X0 + (x+0.5) * CELL_WIDTH
@@ -51,14 +53,9 @@ func init_cars():
 		blue_cars[i].position = xyToPos(0, i+1)
 		red_cars[i].scale = Vector2(3.5/N_CELLS, 3.5/N_CELLS)
 		blue_cars[i].scale = Vector2(3.5/N_CELLS, 3.5/N_CELLS)
-	#$RedCar1.show()
-	#$RedCar2.show()
-	#$BlueCar1.show()
-	#$BlueCar2.show()
-	#$RedCar1.position = xyToPos(1, 0)
-	#$RedCar2.position = xyToPos(2, 0)
-	#$BlueCar1.position = xyToPos(0, 1)
-	#$BlueCar2.position = xyToPos(0, 2)
+	src_pos = Vector2(-1, -1)
+	dst_pos = Vector2(-1, -1)
+	queue_redraw()
 func set_cars(bd: Board):
 	#red_cars.resize(bd.m_red_cars.size())
 	# 前提条件：盤面サイズは同一
@@ -74,6 +71,11 @@ func set_cars(bd: Board):
 			blue_cars[i].hide()
 	pass
 func _draw():
+	draw_rect(Rect2(0, 0, WIDTH, WIDTH), Color.WHITE)
+	if src_pos.x >= 0:
+		draw_rect(Rect2(src_pos, Vector2(CELL_WIDTH, CELL_WIDTH)), Color.LIGHT_GRAY)
+	if dst_pos.x >= 0:
+		draw_rect(Rect2(dst_pos, Vector2(CELL_WIDTH, CELL_WIDTH)), Color.NAVAJO_WHITE)
 	draw_line(Vector2(X0, Y0), Vector2(X0+BD_WD, Y0), Color.BLACK, 2.0)
 	draw_line(Vector2(X0, Y0), Vector2(X0, Y0+BD_HT), Color.BLACK, 2.0)
 	draw_line(Vector2(X0+BD_WD, Y0), Vector2(X0+BD_WD, Y0+BD_HT), Color.BLACK, 2.0)
@@ -90,8 +92,10 @@ func do_move(mv : Vector2, goal : bool):
 	var id = mv.x
 	var pos : Vector2
 	var dir = mv.y
+	dst_pos = Vector2(-1, -1)
 	if id > 0:		# 赤
 		m_car = red_cars[id-1]
+		src_pos = m_car.position - Vector2(CELL_WIDTH/2, CELL_WIDTH/2)
 		pos = m_car.position
 		if dir == Board.FORWARD: pos.y -= CELL_WIDTH
 		elif dir == Board.LEFT: pos.x -= CELL_WIDTH
@@ -99,16 +103,22 @@ func do_move(mv : Vector2, goal : bool):
 	else:
 		m_car = blue_cars[-id-1]
 		pos = m_car.position
+		src_pos = m_car.position - Vector2(CELL_WIDTH/2, CELL_WIDTH/2)
 		if dir == Board.FORWARD: pos.x += CELL_WIDTH
 		elif dir == Board.LEFT: pos.y -= CELL_WIDTH
 		else: pos.y += CELL_WIDTH
 	#m_car.position = pos
 	tw.tween_property(m_car, "position", pos, 0.15)
 	tw.tween_callback(move_finished)
+	queue_redraw()
 
 func move_finished():
 	print("move_finished.")
-	if m_to_hide: m_car.hide()
+	if m_to_hide:
+		m_car.hide()
+	else:
+		dst_pos = m_car.position - Vector2(CELL_WIDTH/2, CELL_WIDTH/2)
+	queue_redraw()
 	pass
 func _process(delta):
 	pass
