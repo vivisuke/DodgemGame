@@ -1,7 +1,7 @@
 class_name Board
 extends Node
 
-const BD_SIZE = 3
+const BD_SIZE = 4
 const EMPTY = 0
 const RED_CAR  =  1
 const BLUE_CAR = -1
@@ -191,6 +191,18 @@ func sel_move_mc(red_turn : bool) -> Vector2:		# 純粋モンテカルロ法に�
 			var r = bd.estimate_win_rate(100, false)
 			print(move_to_str(mv), ": ", r)
 			if r > mxr:
+				mxr = r
+				best = mv
+	else:
+		var mxr = 2.0
+		for mv in m_moves:
+			var bd = Board.new()
+			bd.copy_from(self)
+			if bd.do_move(mv) && bd.m_n_blue == 0:
+				return mv		# すべてゴールした場合
+			var r = bd.estimate_win_rate(100, true)
+			print(move_to_str(mv), ": ", r)
+			if r < mxr:
 				mxr = r
 				best = mv
 	return best

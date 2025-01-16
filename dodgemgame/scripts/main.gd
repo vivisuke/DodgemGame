@@ -54,7 +54,8 @@ func _on_step_button_pressed():		# １手進める
 			$MessLabel.text = "青 の勝ちです。"
 			return
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
-		mv = bd.sel_move()
+		#mv = bd.sel_move()
+		mv = bd.sel_move_mc(false)
 	else:
 		#var r = bd.play_out(true)
 		#var r = bd.estimate_win_rate(100, true)
