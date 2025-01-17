@@ -1,7 +1,7 @@
 class_name Board
 extends Node
 
-const BD_SIZE = 4
+const BD_SIZE = 3
 const EMPTY = 0
 const RED_CAR  =  1
 const BLUE_CAR = -1
@@ -18,6 +18,7 @@ var m_cells = []			# ２次元配列、m_cells[y][x] で参照
 var m_red_cars = PackedVector2Array()		# 赤車位置 (x, y)
 var m_blue_cars = PackedVector2Array()
 var m_moves = PackedVector2Array()			# (車ID, 移動方向)、※ ID は 1 org for RED, -1, -2, ... for BLUE
+var m_eval = 0.0				# 評価値
 
 func _init(bd_size = BD_SIZE):		# 横・縦サイズ
 	init_board(bd_size)
@@ -70,6 +71,10 @@ func copy_from(src: Board):
 	m_blue_cars = src.m_blue_cars.duplicate()
 	m_moves = src.m_moves.duplicate()
 	pass
+func is_red(p):
+	return m_cells[p.y][p.x] > 0
+func is_blue(p):
+	return m_cells[p.y][p.x] < 0
 func print():
 	for v in range(m_bd_size-1, -1, -1):
 		print(m_cells[v])
@@ -182,28 +187,30 @@ func estimate_win_rate(itr : int, red_turn : bool = true) -> float:		# [-1.0, +1
 func sel_move_mc(red_turn : bool) -> Vector2:		# 純粋モンテカルロ法により着手を選ぶ
 	var best = Vector2(0, 0)
 	if red_turn:
-		var mxr = -2.0
+		m_eval = -2.0
 		for mv in m_moves:
 			var bd = Board.new()
 			bd.copy_from(self)
 			if bd.do_move(mv) && bd.m_n_red == 0:
+				m_eval = 1.0
 				return mv		# すべてゴールした場合
 			var r = bd.estimate_win_rate(100, false)
 			print(move_to_str(mv), ": ", r)
-			if r > mxr:
-				mxr = r
+			if r > m_eval:
+				m_eval = r
 				best = mv
 	else:
-		var mxr = 2.0
+		m_eval = 2.0
 		for mv in m_moves:
 			var bd = Board.new()
 			bd.copy_from(self)
 			if bd.do_move(mv) && bd.m_n_blue == 0:
+				m_eval = -1.0
 				return mv		# すべてゴールした場合
 			var r = bd.estimate_win_rate(100, true)
 			print(move_to_str(mv), ": ", r)
-			if r < mxr:
-				mxr = r
+			if r < m_eval:
+				m_eval = r
 				best = mv
 	return best
 func _ready():

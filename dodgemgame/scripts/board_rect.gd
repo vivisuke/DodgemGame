@@ -18,6 +18,7 @@ var red_cars = []
 var blue_cars = []
 var src_pos = Vector2(-1, -1)	# 移動元位置
 var dst_pos = Vector2(-1, -1)	# 移動先位置
+var sel_pos = Vector2(-1, -1)	# 選択位置
 
 func xyToPos(x, y):
 	var px = X0 + (x+0.5) * CELL_WIDTH
@@ -25,6 +26,11 @@ func xyToPos(x, y):
 	return Vector2(px, py)
 func vec2ToPos(vec2):
 	return xyToPos(vec2.x, vec2.y)
+func set_sel_pos(vec2):
+	sel_pos = vec2ToPos(vec2);
+	src_pos = Vector2(-1, -1)
+	dst_pos = Vector2(-1, -1)
+	queue_redraw()
 # 目盛り値ラベル設置
 func add_axis_label(pos, txt):
 	var lbl = Label.new()
@@ -76,6 +82,8 @@ func _draw():
 		draw_rect(Rect2(src_pos, Vector2(CELL_WIDTH, CELL_WIDTH)), Color.LIGHT_GRAY)
 	if dst_pos.x >= 0:
 		draw_rect(Rect2(dst_pos, Vector2(CELL_WIDTH, CELL_WIDTH)), Color.NAVAJO_WHITE)
+	if sel_pos.x >= 0:
+		draw_rect(Rect2(sel_pos, Vector2(CELL_WIDTH, CELL_WIDTH)), Color.YELLOW)
 	draw_line(Vector2(X0, Y0), Vector2(X0+BD_WD, Y0), Color.BLACK, 2.0)
 	draw_line(Vector2(X0, Y0), Vector2(X0, Y0+BD_HT), Color.BLACK, 2.0)
 	draw_line(Vector2(X0+BD_WD, Y0), Vector2(X0+BD_WD, Y0+BD_HT), Color.BLACK, 2.0)

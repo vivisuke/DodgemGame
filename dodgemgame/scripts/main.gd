@@ -3,7 +3,7 @@ extends Node2D
 #const BD_WIDTH = 3
 
 var bd
-var is_blue_turn = true
+var is_red_turn = false
 var is_game_over = false
 
 # Called when the node enters the scene tree for the first time.
@@ -43,11 +43,22 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
+func _input(event):
+	if event is InputEventMouseButton && event.is_pressed():
+		var pos = get_global_mouse_position() - $BoardRect.position
+		pos = (pos - Vector2($BoardRect.X0, $BoardRect.Y0)) / $BoardRect.CELL_WIDTH
+		pos.x = floor(pos.x)
+		pos.y = Board.BD_SIZE - 1 - floor(pos.y)
+		print("mouse pos = ", pos)
+		if pos.x >= 0 && pos.x < Board.BD_SIZE && pos.y >= 0 && pos.y < Board.BD_SIZE:
+			if is_red_turn && bd.is_red(pos) || !is_red_turn && bd.is_blue(pos):
+				$BoardRect.set_sel_pos(pos)
+				pass
+	pass
 func _on_step_button_pressed():		# １手進める
 	if is_game_over: return
 	var mv : Vector2
-	if is_blue_turn:
+	if !is_red_turn:
 		bd.gen_moves_blue()
 		if bd.m_moves.is_empty():
 			is_game_over = true
@@ -68,6 +79,7 @@ func _on_step_button_pressed():		# １手進める
 		#mv = bd.m_moves[randi()%bd.m_moves.size()]
 		mv = bd.sel_move_mc(true)
 	#mv = bd.sel_move()
+	$EvalLabel.text = "eval = %.2f"%bd.m_eval
 	bd.print_moves()
 	#print("moves: ", bd.m_moves)
 	print("move: ", mv)
@@ -81,8 +93,8 @@ func _on_step_button_pressed():		# １手進める
 		else:
 			$MessLabel.text = "青 の勝ちです。"
 	else:
-		is_blue_turn = !is_blue_turn
-		if is_blue_turn:
+		is_red_turn = !is_red_turn
+		if !is_red_turn:
 			$MessLabel.text = "青 の手番です。"
 		else:
 			$MessLabel.text = "赤 の手番です。"
@@ -92,8 +104,9 @@ func _on_step_button_pressed():		# １手進める
 
 func _on_restart_button_pressed():
 	is_game_over = false
-	is_blue_turn = true
+	is_red_turn = false
 	$MessLabel.text = "青 の手番です。"
+	$EvalLabel.text = "eval = 0.0"
 	bd.init_board(Board.BD_SIZE)
 	bd.print()
 	$BoardRect.init_cars()
