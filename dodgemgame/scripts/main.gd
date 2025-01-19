@@ -14,6 +14,7 @@ func _ready():
 		bd.set_cars([Vector2(2, 0)], [Vector2(0, 2)])
 		bd.print()
 	bd = Board.new()
+	$BoardRect.m_bd = bd
 	if false:
 		bd.set_cars([Vector2(2, 1)], [Vector2(1, 2)])
 		bd.print()
