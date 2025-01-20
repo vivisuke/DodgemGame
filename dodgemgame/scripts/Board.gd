@@ -71,6 +71,8 @@ func copy_from(src: Board):
 	m_blue_cars = src.m_blue_cars.duplicate()
 	m_moves = src.m_moves.duplicate()
 	pass
+func is_empty_cell(p):
+	return m_cells[p.y][p.x] == EMPTY
 func is_red(p):
 	return m_cells[p.y][p.x] > 0
 func is_blue(p):
@@ -146,7 +148,7 @@ func do_move(mv : Vector2) -> bool:		# return: ゴールした
 		if m_red_cars[ix].y < m_bd_size:
 			m_cells[m_red_cars[id-1].y][m_red_cars[id-1].x] = id
 			return false
-		else:
+		else:		# ゴールした場合
 			m_n_red -= 1
 			return true
 	else:		# 青移動
@@ -161,9 +163,38 @@ func do_move(mv : Vector2) -> bool:		# return: ゴールした
 		if m_blue_cars[ix].x < m_bd_size:
 			m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = id
 			return false;
-		else:
+		else:		# ゴールした場合
 			m_n_blue -= 1
 			return true
+func undo_move(mv : Vector2):
+	var id = mv.x
+	if id > 0:	# 赤移動
+		var ix = id - 1
+		if m_red_cars[ix].y == m_bd_size:	# ゴールしてた場合
+			m_n_red += 1
+		else:
+			m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = EMPTY
+		if mv.y == FORWARD:
+			m_red_cars[ix].y -= 1
+		elif mv.y == LEFT:
+			m_red_cars[ix].x += 1
+		else:
+			m_red_cars[ix].x -= 1
+		m_cells[m_red_cars[ix].y][m_red_cars[ix].x] = id
+	else:		# 青移動
+		var ix = -id - 1
+		if m_red_cars[ix].x == m_bd_size:	# ゴールしてた場合
+			m_n_blue += 1
+		else:
+			m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = EMPTY
+		if mv.y == FORWARD:
+			m_blue_cars[ix].x -= 1
+		elif mv.y == LEFT:
+			m_blue_cars[ix].y -= 1
+		else:
+			m_blue_cars[ix].y += 1
+		m_cells[m_blue_cars[ix].y][m_blue_cars[ix].x] = id
+	
 func play_out(red_turn : bool = true) -> int:		# 1 for 赤勝ち, -1 for 青勝ち, 0 for 引き分け
 	var bd : Board = Board.new(m_bd_size)
 	bd.copy_from(self)

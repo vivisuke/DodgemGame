@@ -5,6 +5,8 @@ extends Node2D
 var bd
 var is_red_turn = false
 var is_game_over = false
+var src_pos = Vector2(-1, -1)
+var dst_pos = Vector2(-1, -1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,6 +14,11 @@ func _ready():
 	if false:
 		var bd = Board.new()
 		bd.set_cars([Vector2(2, 0)], [Vector2(0, 2)])
+		bd.print()
+		var mv = Vector2(-1, Board.FORWARD)
+		bd.do_move(mv)
+		bd.print()
+		bd.undo_move(mv)
 		bd.print()
 	bd = Board.new()
 	$BoardRect.m_bd = bd
@@ -44,17 +51,60 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+func sdToMove(src, dst):
+	var id = bd.m_cells[src.y][src.x]
+	var dir = Board.FORWARD
+	if is_red_turn:
+		if dst.x < src.x: dir = Board.LEFT
+		elif dst.x > src.x: dir = Board.RIGHT
+	else:
+		if dst.y > src.y: dir = Board.LEFT
+		elif dst.y < src.y: dir = Board.RIGHT
+	return Vector2(id, dir)
+func can_move_to(dst):
+	if !bd.is_empty_cell(dst): return false
+	if is_red_turn:
+		if dst.y == src_pos.y + 1: return true
+		if dst.y == src_pos.y && abs(dst.x - src_pos.x) == 1: return true
+	else:
+		if dst.x == src_pos.x + 1: return true
+		if dst.x == src_pos.x && abs(dst.y - src_pos.y) == 1: return true
+	return false
 func _input(event):
 	if event is InputEventMouseButton && event.is_pressed():
 		var pos = get_global_mouse_position() - $BoardRect.position
 		pos = (pos - Vector2($BoardRect.X0, $BoardRect.Y0)) / $BoardRect.CELL_WIDTH
 		pos.x = floor(pos.x)
 		pos.y = Board.BD_SIZE - 1 - floor(pos.y)
-		print("mouse pos = ", pos)
 		if pos.x >= 0 && pos.x < Board.BD_SIZE && pos.y >= 0 && pos.y < Board.BD_SIZE:
 			if is_red_turn && bd.is_red(pos) || !is_red_turn && bd.is_blue(pos):
 				$BoardRect.set_sel_pos(pos)
-				pass
+				src_pos = pos
+				print("src_pos = ", pos)
+			elif can_move_to(pos):
+				print("dst_pos = ", pos)
+				var mv = sdToMove(src_pos, pos)
+				print("move = ", mv)
+				var goal = bd.do_move(mv)
+				bd.print()
+				$BoardRect.do_move(mv, goal)
+				is_red_turn = !is_red_turn
+		if is_red_turn && pos.x >= 0 && pos.x < Board.BD_SIZE && pos.y >= Board.BD_SIZE:
+			pos.x = src_pos.x
+			var mv = sdToMove(src_pos, pos)
+			print("move = ", mv)
+			var goal = bd.do_move(mv)
+			bd.print()
+			$BoardRect.do_move(mv, goal)
+			is_red_turn = !is_red_turn
+		if !is_red_turn && pos.y >= 0 && pos.y < Board.BD_SIZE && pos.x >= Board.BD_SIZE:
+			pos.y = src_pos.y
+			var mv = sdToMove(src_pos, pos)
+			print("move = ", mv)
+			var goal = bd.do_move(mv)
+			bd.print()
+			$BoardRect.do_move(mv, goal)
+			is_red_turn = !is_red_turn
 	pass
 func _on_step_button_pressed():		# １手進める
 	if is_game_over: return
